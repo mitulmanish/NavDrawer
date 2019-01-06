@@ -53,10 +53,12 @@ class NavigationDrawerSwipeController: UIPresentationController {
             if screenGestureEnabled {
                 presentedView.frame.origin.x = isRTL ? (containerView?.bounds.width ?? 0) + translationPoint.x :
                     (-presentedViewWidth + translationPoint.x)
+                let translationX = presentedViewWidth - abs(translationPoint.x)
+                configureDimmingViewAlpha(for: translationX)
             } else {
                 presentedView.frame.origin.x = translationPoint.x + (originX ?? 0)
+                configureDimmingViewAlpha(for: translationPoint.x)
             }
-            configureDimmingViewAlpha(for: translationPoint)
         case .ended:
             if screenGestureEnabled {
                 animateForScreenGesture(translationPoint)
@@ -101,9 +103,12 @@ class NavigationDrawerSwipeController: UIPresentationController {
         }
     }
 
-    private func configureDimmingViewAlpha(for translationPoint: CGPoint) {
-        let ratio = (abs(presentedViewWidth) - abs(translationPoint.x)) / abs(presentedViewWidth)
+    private func configureDimmingViewAlpha(for translationPoint: CGFloat) {
+        print("T: \(translationPoint)")
+        let ratio = (abs(presentedViewWidth) - abs(translationPoint)) / abs(presentedViewWidth)
+        print("Ratio: \(ratio)")
         dimmingView?.alpha = min(max((ratio / 2), 0), 1)
+        print("A: \(dimmingView?.alpha)")
     }
 
     private func animate(to dragDirection: DragDirection) {
