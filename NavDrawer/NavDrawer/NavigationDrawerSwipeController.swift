@@ -104,11 +104,8 @@ class NavigationDrawerSwipeController: UIPresentationController {
     }
 
     private func configureDimmingViewAlpha(for translationPoint: CGFloat) {
-        print("T: \(translationPoint)")
         let ratio = (abs(presentedViewWidth) - abs(translationPoint)) / abs(presentedViewWidth)
-        print("Ratio: \(ratio)")
         dimmingView?.alpha = min(max((ratio / 2), 0), 1)
-        print("A: \(dimmingView?.alpha)")
     }
 
     private func animate(to dragDirection: DragDirection) {
